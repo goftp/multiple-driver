@@ -30,13 +30,13 @@ func (driver *MultipleDriver) Stat(path string) (server.FileInfo, error) {
 	return nil, errors.New("Not a file")
 }
 
-func (driver *MultipleDriver) DirContents(path string) ([]server.FileInfo, error) {
+func (driver *MultipleDriver) ListDir(path string, callback func(server.FileInfo) error) error {
 	for prefix, driver := range driver.drivers {
 		if strings.HasPrefix(path, prefix) {
-			return driver.DirContents(strings.TrimPrefix(path, prefix))
+			return driver.ListDir(strings.TrimPrefix(path, prefix), callback)
 		}
 	}
-	return nil, errors.New("Not a directory")
+	return errors.New("Not a directory")
 }
 
 func (driver *MultipleDriver) DeleteDir(path string) error {
