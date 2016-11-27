@@ -8,8 +8,14 @@ import (
 	"github.com/goftp/server"
 )
 
+var _ server.Driver = &MultipleDriver{}
+
 type MultipleDriver struct {
 	drivers map[string]server.Driver
+}
+
+// Init init
+func (driver *MultipleDriver) Init(conn *server.Conn) {
 }
 
 func (driver *MultipleDriver) ChangeDir(path string) error {
